@@ -2,16 +2,15 @@
 # Conditional build:
 %bcond_with	opt		# build opt
 
-%define		pkgname	biniou
-%define		debug_package	%{nil}
+%define		module	biniou
 Summary:	Flexible binary data format in OCaml
 Summary(pl.UTF-8):	Wiązania biniou dla OCamla
-Name:		ocaml-%{pkgname}
+Name:		ocaml-%{module}
 Version:	1.0.8
 Release:	1
 License:	BSD
 Group:		Libraries
-Source0:	http://mjambon.com/releases/biniou/%{pkgname}-%{version}.tar.gz
+Source0:	http://mjambon.com/releases/biniou/%{module}-%{version}.tar.gz
 # Source0-md5:	55683bdf16835ad4000e0c3200efa38f
 URL:		http://martin.jambon.free.fr/biniou.html
 BuildRequires:	ocaml >= 3.04-7
@@ -19,6 +18,8 @@ BuildRequires:	ocaml-easy-format-devel >= 1.0.1
 BuildRequires:	ocaml-findlib >= 1.4
 %requires_eq	ocaml-runtime
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		debug_package	%{nil}
 
 %description
 Biniou is a binary data format designed for speed, safety, ease of use
@@ -48,7 +49,7 @@ Pakiet ten zawiera pliki niezbędne do tworzenia programów używających
 tej biblioteki.
 
 %prep
-%setup -q -n %{pkgname}-%{version}
+%setup -q -n %{module}-%{version}
 
 %build
 %{__make} -j1 all %{?with_opt:opt} \
@@ -57,16 +58,16 @@ tej biblioteki.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{biniou,stublibs}
-cp -a *.cm[ixa]* $RPM_BUILD_ROOT%{_libdir}/ocaml/biniou
+install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{%{module},stublibs}
+cp -a *.cm[ixa]* $RPM_BUILD_ROOT%{_libdir}/ocaml/%{module}
 
-install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/biniou
-cat > $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/biniou/META <<EOF
+install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}
+cat > $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}/META <<EOF
 requires = ""
 version = "%{version}"
-directory = "+biniou"
-archive(byte) = "biniou.cma"
-archive(native) = "biniou.cmxa"
+directory = "+%{module}"
+archive(byte) = "%{module}.cma"
+archive(native) = "%{module}.cmxa"
 linkopts = ""
 EOF
 
@@ -76,6 +77,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %doc LICENSE *.mli
-%dir %{_libdir}/ocaml/biniou
-%{_libdir}/ocaml/biniou/*.cm[ixa]*
-%{_libdir}/ocaml/site-lib/biniou
+%dir %{_libdir}/ocaml/%{module}
+%{_libdir}/ocaml/%{module}/*.cm[ixa]*
+%{_libdir}/ocaml/site-lib/%{module}
