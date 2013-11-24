@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_with	opt		# build opt
+%bcond_without	opt		# build opt
 
 %define		module	biniou
 Summary:	Flexible binary data format in OCaml
@@ -57,18 +57,17 @@ tej biblioteki.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/ocaml}
+%{__make} install \
+	OCAMLFIND_DESTDIR=$RPM_BUILD_ROOT%{_libdir}/ocaml \
+	PREFIX=$RPM_BUILD_ROOT%{_prefix} \
+	DESTDIR=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/{%{module},stublibs}
-cp -a *.cm[ixa]* $RPM_BUILD_ROOT%{_libdir}/ocaml/%{module}
-
+# move to dir pld ocamlfind looks
 install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}
-cat > $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}/META <<EOF
-requires = ""
-version = "%{version}"
-directory = "+%{module}"
-archive(byte) = "%{module}.cma"
-archive(native) = "%{module}.cmxa"
-linkopts = ""
+mv $RPM_BUILD_ROOT%{_libdir}/ocaml/{,site-lib/}%{module}/META
+cat <<EOF >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}/META
+directory="+%{module}"
 EOF
 
 %clean
@@ -76,7 +75,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc LICENSE *.mli
+%doc LICENSE
 %dir %{_libdir}/ocaml/%{module}
-%{_libdir}/ocaml/%{module}/*.cm[ixa]*
+%{_libdir}/ocaml/%{module}/*.cm[ix]
+%{_libdir}/ocaml/%{module}/*.cm[ao]
+%{_libdir}/ocaml/%{module}/*.mli
+%if %{with opt}
+%attr(755,root,root) %{_bindir}/bdump
+%{_libdir}/ocaml/%{module}/*.[ao]
+%{_libdir}/ocaml/%{module}/*.cmxa
+%endif
 %{_libdir}/ocaml/site-lib/%{module}
