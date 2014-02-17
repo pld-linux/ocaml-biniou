@@ -78,6 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %dir %{_libdir}/ocaml/%{module}
 %{_libdir}/ocaml/%{module}/*.cmxs
+%{_libdir}/ocaml/site-lib/%{module}
 
 %files devel
 %defattr(644,root,root,755)
@@ -90,4 +91,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ocaml/%{module}/*.[ao]
 %{_libdir}/ocaml/%{module}/*.cmxa
 %endif
-%{_libdir}/ocaml/site-lib/%{module}
