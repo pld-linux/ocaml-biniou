@@ -39,6 +39,7 @@ Summary:	biniou binding for OCaml - development part
 Summary(pl.UTF-8):	Wiązania biniou dla OCamla - cześć programistyczna
 Group:		Development/Libraries
 %requires_eq	ocaml
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 This package contains files needed to develop OCaml programs using
@@ -73,10 +74,14 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%files
+%defattr(644,root,root,755)
+%dir %{_libdir}/ocaml/%{module}
+%{_libdir}/ocaml/%{module}/*.cmxs
+
 %files devel
 %defattr(644,root,root,755)
 %doc LICENSE
-%dir %{_libdir}/ocaml/%{module}
 %{_libdir}/ocaml/%{module}/*.cm[ix]
 %{_libdir}/ocaml/%{module}/*.cm[ao]
 %{_libdir}/ocaml/%{module}/*.mli
