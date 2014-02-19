@@ -7,7 +7,7 @@ Summary:	Flexible binary data format in OCaml
 Summary(pl.UTF-8):	Wiązania biniou dla OCamla
 Name:		ocaml-%{module}
 Version:	1.0.9
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 Source0:	http://mjambon.com/releases/biniou/%{module}-%{version}.tar.gz
@@ -17,6 +17,7 @@ BuildRequires:	ocaml >= 3.04-7
 BuildRequires:	ocaml-easy-format-devel >= 1.0.1
 BuildRequires:	ocaml-findlib >= 1.4
 %requires_eq	ocaml-runtime
+Requires:	ocaml-easy-format >= 1.0.1
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		debug_package	%{nil}
@@ -40,6 +41,7 @@ Summary(pl.UTF-8):	Wiązania biniou dla OCamla - cześć programistyczna
 Group:		Development/Libraries
 %requires_eq	ocaml
 Requires:	%{name} = %{version}-%{release}
+Requires:	ocaml-easy-format-devel >= 1.0.1
 
 %description devel
 This package contains files needed to develop OCaml programs using
