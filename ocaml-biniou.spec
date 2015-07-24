@@ -11,7 +11,7 @@ Summary:	Flexible binary data format in OCaml
 Summary(pl.UTF-8):	Elastyczny format danych binarnych dla OCamla
 Name:		ocaml-%{module}
 Version:	1.0.9
-Release:	4
+Release:	5
 License:	BSD
 Group:		Libraries
 Source0:	http://mjambon.com/releases/biniou/%{module}-%{version}.tar.gz
@@ -50,9 +50,7 @@ Summary:	biniou binding for OCaml - development part
 Summary(pl.UTF-8):	Wiązania biniou dla OCamla - cześć programistyczna
 Group:		Development/Libraries
 %requires_eq	ocaml
-%if %{with ocaml_opt}
 Requires:	%{name} = %{version}-%{release}
-%endif
 Requires:	ocaml-easy-format-devel >= 1.0.1
 
 %description devel
@@ -97,7 +95,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/ocaml}
 
 # move to dir pld ocamlfind looks
 install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}
-mv $RPM_BUILD_ROOT%{_libdir}/ocaml/{,site-lib/}%{module}/META
+%{__mv} $RPM_BUILD_ROOT%{_libdir}/ocaml/{,site-lib/}%{module}/META
 cat <<EOF >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}/META
 directory="+%{module}"
 EOF
@@ -105,30 +103,26 @@ EOF
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%if %{with ocaml_opt}
 %files
 %defattr(644,root,root,755)
+%doc LICENSE
 %dir %{_libdir}/ocaml/%{module}
-%{_libdir}/ocaml/%{module}/*.cmxs
-%{_libdir}/ocaml/site-lib/%{module}
+%{_libdir}/ocaml/%{module}/biniou.cma
+%if %{with ocaml_opt}
+%attr(755,root,root) %{_libdir}/ocaml/%{module}/biniou.cmxs
 %endif
+%{_libdir}/ocaml/site-lib/%{module}
 
 %files devel
 %defattr(644,root,root,755)
-%doc LICENSE
-%if %{without ocaml_opt}
-%dir %{_libdir}/ocaml/%{module}
-%{_libdir}/ocaml/site-lib/%{module}
-%endif
-%{_libdir}/ocaml/%{module}/*.cma
-%{_libdir}/ocaml/%{module}/*.cmi
-%{_libdir}/ocaml/%{module}/*.cmo
+%{_libdir}/ocaml/%{module}/bi_*.cmi
+%{_libdir}/ocaml/%{module}/bi_*.cmo
 # doc?
-%{_libdir}/ocaml/%{module}/*.mli
+%{_libdir}/ocaml/%{module}/bi_*.mli
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_bindir}/bdump
-%{_libdir}/ocaml/%{module}/*.cmx
-%{_libdir}/ocaml/%{module}/*.a
-%{_libdir}/ocaml/%{module}/*.o
-%{_libdir}/ocaml/%{module}/*.cmxa
+%{_libdir}/ocaml/%{module}/biniou.a
+%{_libdir}/ocaml/%{module}/biniou.cmxa
+%{_libdir}/ocaml/%{module}/bi_*.cmx
+%{_libdir}/ocaml/%{module}/bi_*.o
 %endif
