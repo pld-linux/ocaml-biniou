@@ -11,7 +11,7 @@ Summary:	Flexible binary data format in OCaml
 Summary(pl.UTF-8):	Elastyczny format danych binarnych dla OCamla
 Name:		ocaml-%{module}
 Version:	1.0.9
-Release:	6
+Release:	7
 License:	BSD
 Group:		Libraries
 Source0:	http://mjambon.com/releases/biniou/%{module}-%{version}.tar.gz
