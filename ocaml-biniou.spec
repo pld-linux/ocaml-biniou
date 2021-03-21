@@ -10,13 +10,13 @@
 Summary:	Flexible binary data format in OCaml
 Summary(pl.UTF-8):	Elastyczny format danych binarnych dla OCamla
 Name:		ocaml-%{module}
-Version:	1.0.9
-Release:	7
+Version:	1.2.1
+Release:	0.1
 License:	BSD
 Group:		Libraries
-Source0:	http://mjambon.com/releases/biniou/%{module}-%{version}.tar.gz
-# Source0-md5:	2f9f355281817912ac04c589eb463ef2
-URL:		http://martin.jambon.free.fr/biniou.html
+Source0:	https://github.com/ocaml-community/biniou/releases/download/%{version}/%{module}-%{version}.tbz
+# Source0-md5:	07e30c58975cba31cd770a8c0df20f29
+URL:		https://github.com/ocaml-community/biniou
 BuildRequires:	ocaml >= 3.04-7
 BuildRequires:	ocaml-easy-format-devel >= 1.0.1
 BuildRequires:	ocaml-findlib >= 1.4
@@ -82,7 +82,7 @@ biblioteki biniou.
 %setup -q -n %{module}-%{version}
 
 %build
-%{__make} -j1 all %{?with_ocaml_opt:opt} \
+%{__make} all \
 	CC="%{__cc} %{rpmcflags} -fPIC"
 
 %install
