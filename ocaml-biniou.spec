@@ -108,21 +108,22 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 %dir %{_libdir}/ocaml/%{module}
 %{_libdir}/ocaml/%{module}/biniou.cma
+%{_libdir}/ocaml/%{module}/bi_*.cmi
+%{_libdir}/ocaml/%{module}/bi_*.cmt
+%{_libdir}/ocaml/%{module}/bi_*.cmti
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_libdir}/ocaml/%{module}/biniou.cmxs
 %endif
+%{_libdir}/ocaml/%{module}/dune-package
+%{_libdir}/ocaml/%{module}/opam
 %{_libdir}/ocaml/site-lib/%{module}
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/ocaml/%{module}/bi_*.cmi
-%{_libdir}/ocaml/%{module}/bi_*.cmo
-# doc?
 %{_libdir}/ocaml/%{module}/bi_*.mli
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_bindir}/bdump
 %{_libdir}/ocaml/%{module}/biniou.a
 %{_libdir}/ocaml/%{module}/biniou.cmxa
 %{_libdir}/ocaml/%{module}/bi_*.cmx
-%{_libdir}/ocaml/%{module}/bi_*.o
 %endif
