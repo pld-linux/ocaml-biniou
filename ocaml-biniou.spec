@@ -11,7 +11,7 @@ Summary:	Flexible binary data format in OCaml
 Summary(pl.UTF-8):	Elastyczny format danych binarnych dla OCamla
 Name:		ocaml-%{module}
 Version:	1.2.1
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 Source0:	https://github.com/ocaml-community/biniou/releases/download/%{version}/%{module}-%{version}.tbz
@@ -93,13 +93,6 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/ocaml}
 	PREFIX=$RPM_BUILD_ROOT%{_prefix} \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# move to dir pld ocamlfind looks
-install -d $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}
-%{__mv} $RPM_BUILD_ROOT%{_libdir}/ocaml/{,site-lib/}%{module}/META
-cat <<EOF >> $RPM_BUILD_ROOT%{_libdir}/ocaml/site-lib/%{module}/META
-directory="+%{module}"
-EOF
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -107,6 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc LICENSE
 %dir %{_libdir}/ocaml/%{module}
+%{_libdir}/ocaml/%{module}/META
 %{_libdir}/ocaml/%{module}/biniou.cma
 %{_libdir}/ocaml/%{module}/bi_*.cmi
 %{_libdir}/ocaml/%{module}/bi_*.cmt
@@ -114,9 +108,6 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_libdir}/ocaml/%{module}/biniou.cmxs
 %endif
-%{_libdir}/ocaml/%{module}/dune-package
-%{_libdir}/ocaml/%{module}/opam
-%{_libdir}/ocaml/site-lib/%{module}
 
 %files devel
 %defattr(644,root,root,755)
@@ -127,3 +118,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ocaml/%{module}/biniou.cmxa
 %{_libdir}/ocaml/%{module}/bi_*.cmx
 %endif
+%{_libdir}/ocaml/%{module}/dune-package
+%{_libdir}/ocaml/%{module}/opam
