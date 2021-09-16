@@ -1,8 +1,8 @@
 #
 # Conditional build:
-%bcond_without	ocaml_opt	# skip building native optimized binaries (bytecode is always built)
+%bcond_without	ocaml_opt	# native optimized binaries (bytecode is always built)
 
-%ifnarch %{ix86} %{x8664} arm aarch64 ppc sparc sparcv9
+%ifnarch %{ix86} %{x8664} %{arm} aarch64 ppc sparc sparcv9
 %undefine	with_ocaml_opt
 %endif
 
@@ -14,10 +14,12 @@ Version:	1.2.1
 Release:	2
 License:	BSD
 Group:		Libraries
+#Source0Download: https://github.com/ocaml-community/biniou/releases
 Source0:	https://github.com/ocaml-community/biniou/releases/download/%{version}/%{module}-%{version}.tbz
 # Source0-md5:	07e30c58975cba31cd770a8c0df20f29
 URL:		https://github.com/ocaml-community/biniou
-BuildRequires:	ocaml >= 3.04-7
+BuildRequires:	ocaml >= 1:4.02.3
+BuildRequires:	ocaml-dune >= 1.10
 BuildRequires:	ocaml-easy-format-devel >= 1.0.1
 BuildRequires:	ocaml-findlib >= 1.4
 %requires_eq	ocaml-runtime
@@ -82,35 +84,36 @@ biblioteki biniou.
 %setup -q -n %{module}-%{version}
 
 %build
-%{__make} all \
-	CC="%{__cc} %{rpmcflags} -fPIC"
+dune build --display=verbose
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/ocaml}
-%{__make} install \
-	OCAMLFIND_DESTDIR=$RPM_BUILD_ROOT%{_libdir}/ocaml \
-	PREFIX=$RPM_BUILD_ROOT%{_prefix} \
-	DESTDIR=$RPM_BUILD_ROOT
+
+dune install --destdir=$RPM_BUILD_ROOT
+
+# sources
+%{__rm} -r $RPM_BUILD_ROOT%{_libdir}/ocaml/%{module}/*.ml
+# packaged as %doc
+%{__rm} -r $RPM_BUILD_ROOT%{_prefix}/doc/%{module}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE
+%doc CHANGES.md LICENSE README.md
 %dir %{_libdir}/ocaml/%{module}
 %{_libdir}/ocaml/%{module}/META
 %{_libdir}/ocaml/%{module}/biniou.cma
-%{_libdir}/ocaml/%{module}/bi_*.cmi
-%{_libdir}/ocaml/%{module}/bi_*.cmt
-%{_libdir}/ocaml/%{module}/bi_*.cmti
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_libdir}/ocaml/%{module}/biniou.cmxs
 %endif
 
 %files devel
 %defattr(644,root,root,755)
+%{_libdir}/ocaml/%{module}/bi_*.cmi
+%{_libdir}/ocaml/%{module}/bi_*.cmt
+%{_libdir}/ocaml/%{module}/bi_*.cmti
 %{_libdir}/ocaml/%{module}/bi_*.mli
 %if %{with ocaml_opt}
 %attr(755,root,root) %{_bindir}/bdump
