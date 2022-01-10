@@ -49,7 +49,7 @@ wariantów, które są reprezentowane jako 31-bitowe hasze.
 
 %package devel
 Summary:	biniou binding for OCaml - development part
-Summary(pl.UTF-8):	Wiązania biniou dla OCamla - cześć programistyczna
+Summary(pl.UTF-8):	Wiązania biniou dla OCamla - część programistyczna
 Group:		Development/Libraries
 %requires_eq	ocaml
 Requires:	%{name} = %{version}-%{release}
